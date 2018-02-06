@@ -169,11 +169,11 @@ ng.module('opentok', [])
               });
             }
           });
-          $rootScope.$on('otToggleVideo', function(value) {
-            scope.publisher.publishVideo(value);
+          $rootScope.$on('otToggleVideo', function(event, boolean) {
+            scope.publisher.publishVideo(boolean);
           });
-          $rootScope.$on('otToggleAudio', function(value) {
-            scope.publisher.publishAudio(value);
+          $rootScope.$on('otToggleAudio', function(event, boolean) {
+            scope.publisher.publishAudio(boolean);
           });
           scope.$on('$destroy', function() {
             if (OTSession.session) OTSession.session.unpublish(scope.publisher);
