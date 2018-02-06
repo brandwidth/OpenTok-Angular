@@ -217,6 +217,12 @@ ng.module('opentok', [])
               event.element.addEventListener('resize', function() {
                 $rootScope.$broadcast('otLayout');
               });
+            },
+            connected: function(event) {
+              scope.$emit('otSubscribeConnected', event);
+            },
+            disconnected: function(event) {
+              scope.$emit('otSubscribeDisconnected', event);
             }
           });
           // Make transcluding work manually by putting the children back in there
