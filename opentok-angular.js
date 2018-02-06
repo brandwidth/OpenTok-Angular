@@ -219,10 +219,10 @@ ng.module('opentok', [])
               });
             },
             connected: function(event) {
-              scope.$emit('otSubscribeConnected', event);
+              scope.$emit('otSubscriberConnected', event);
             },
             disconnected: function(event) {
-              scope.$emit('otSubscribeDisconnected', event);
+              scope.$emit('otSubscriberDisconnected', event);
             }
           });
           // Make transcluding work manually by putting the children back in there
