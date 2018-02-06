@@ -169,6 +169,12 @@ ng.module('opentok', [])
               });
             }
           });
+          scope.$on('otToggleVideo', function(value) {
+            scope.publisher.publishVideo(value);
+          });
+          scope.$on('otToggleAudio', function(value) {
+            scope.publisher.publishAudio(value);
+          });
           scope.$on('$destroy', function() {
             if (OTSession.session) OTSession.session.unpublish(scope.publisher);
             else scope.publisher.destroy();
