@@ -181,6 +181,9 @@ ng.module('opentok', [])
             OTSession.publishers = OTSession.publishers.filter(function(publisher) {
               return publisher !== scope.publisher;
             });
+            OTSession.connections = OTSession.connections.filter(function(connection) {
+              return connection.id !== scope.publisher.stream.connection.id;
+            });
             scope.publisher = null;
           });
           if (OTSession.session && (OTSession.session.connected ||
@@ -234,10 +237,7 @@ ng.module('opentok', [])
           // Make transcluding work manually by putting the children back in there
           ng.element(element).append(oldChildren);
           scope.$on('$destroy', function() {
-            if (OTSession.session) OTSession.session.unsubscribe(subscriber);
-            else OTSession.session.destroy();
-            
-            OTSession.streams = [];
+            OTSession.session.unsubscribe(subscriber);
           });
         }
       };
