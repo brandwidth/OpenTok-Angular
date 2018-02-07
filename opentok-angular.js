@@ -169,6 +169,12 @@ ng.module('opentok', [])
               });
             }
           });
+          $rootScope.$on('otToggleVideo', function (event, boolean) {
+            scope.publisher.publishVideo(boolean);
+          });
+          $rootScope.$on('otToggleAudio', function (event, boolean) {
+            scope.publisher.publishAudio(boolean);
+          });
           scope.$on('$destroy', function() {
             if (OTSession.session) OTSession.session.unpublish(scope.publisher);
             else scope.publisher.destroy();
@@ -217,6 +223,12 @@ ng.module('opentok', [])
               event.element.addEventListener('resize', function() {
                 $rootScope.$broadcast('otLayout');
               });
+            },
+            connected: function (event) {
+              scope.$emit('otSubscriberConnected', event);
+            },
+            disconnected: function (event) {
+              scope.$emit('otSubscriberDisconnected', event);
             }
           });
           // Make transcluding work manually by putting the children back in there
