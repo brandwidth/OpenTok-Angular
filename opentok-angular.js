@@ -161,6 +161,7 @@ ng.module('opentok', [])
               scope.$emit('otStreamCreated', event);
             },
             streamDestroyed: function(event) {
+              event.preventDefault();
               scope.$emit('otStreamDestroyed', event);
             },
             videoElementCreated: function(event) {
@@ -182,6 +183,10 @@ ng.module('opentok', [])
               return publisher !== scope.publisher;
             });
             scope.publisher = null;
+            if (OTSession.session && (OTSession.session.connected ||
+            (OTSession.session.isConnected && OTSession.session.isConnected()))) {
+              OTSession.session.disconnect();
+            }
           });
           if (OTSession.session && (OTSession.session.connected ||
             (OTSession.session.isConnected && OTSession.session.isConnected()))) {
