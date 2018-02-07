@@ -234,10 +234,7 @@ ng.module('opentok', [])
           // Make transcluding work manually by putting the children back in there
           ng.element(element).append(oldChildren);
           scope.$on('$destroy', function() {
-            OTSession.session.unsubscribe(subscriber);
             OTSession.session.disconnect();
-            OTSession.streams.splice(0, OTSession.streams.length);
-            OTSession.connections.splice(0, OTSession.connections.length);
           });
         }
       };
