@@ -34,6 +34,15 @@ ng.module('opentok', [])
         connections: [],
         publishers: [],
         init: function(apiKey, sessionId, token, cb) {
+          if (OTSession.session) {
+            OTSession.session.disconnect();
+
+            $rootScope.$apply(function () {
+              OTSession.streams.splice(0, OTSession.streams.length);
+              OTSession.connections.splice(0, OTSession.connections.length);
+            });
+          }
+
           this.session = OT.initSession(apiKey, sessionId);
 
           OTSession.session.on({
@@ -234,7 +243,7 @@ ng.module('opentok', [])
           // Make transcluding work manually by putting the children back in there
           ng.element(element).append(oldChildren);
           scope.$on('$destroy', function() {
-            OTSession.session.destroy();
+            OTSession.session.unsubscribe(subscriber);
           });
         }
       };
