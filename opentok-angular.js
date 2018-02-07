@@ -240,6 +240,7 @@ ng.module('opentok', [])
           ng.element(element).append(oldChildren);
           scope.$on('$destroy', function() {
             OTSession.session.unsubscribe(subscriber);
+            scope.streams = null;
           });
         }
       };
