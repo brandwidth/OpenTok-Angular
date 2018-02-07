@@ -48,7 +48,9 @@ ng.module('opentok', [])
             },
             streamCreated: function(event) {
               $rootScope.$apply(function() {
-                OTSession.streams.push(event.stream);
+                if (OTSession.streams.indexOf(event.stream) === -1) {
+                  OTSession.streams.push(event.stream);
+                }
               });
             },
             streamDestroyed: function(event) {
@@ -240,7 +242,6 @@ ng.module('opentok', [])
           ng.element(element).append(oldChildren);
           scope.$on('$destroy', function() {
             OTSession.session.unsubscribe(subscriber);
-            scope.streams = null;
           });
         }
       };
