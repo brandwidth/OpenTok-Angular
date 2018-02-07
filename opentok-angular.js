@@ -48,9 +48,7 @@ ng.module('opentok', [])
             },
             streamCreated: function(event) {
               $rootScope.$apply(function() {
-                if (OTSession.streams.indexOf(event.stream) === -1) {
-                  OTSession.streams.push(event.stream);
-                }
+                OTSession.streams.push(event.stream);
               });
             },
             streamDestroyed: function(event) {
@@ -163,7 +161,6 @@ ng.module('opentok', [])
               scope.$emit('otStreamCreated', event);
             },
             streamDestroyed: function(event) {
-              event.preventDefault();
               scope.$emit('otStreamDestroyed', event);
             },
             videoElementCreated: function(event) {
@@ -185,10 +182,6 @@ ng.module('opentok', [])
               return publisher !== scope.publisher;
             });
             scope.publisher = null;
-            if (OTSession.session && (OTSession.session.connected ||
-            (OTSession.session.isConnected && OTSession.session.isConnected()))) {
-              OTSession.session.disconnect();
-            }
           });
           if (OTSession.session && (OTSession.session.connected ||
             (OTSession.session.isConnected && OTSession.session.isConnected()))) {
@@ -241,7 +234,9 @@ ng.module('opentok', [])
           // Make transcluding work manually by putting the children back in there
           ng.element(element).append(oldChildren);
           scope.$on('$destroy', function() {
-            OTSession.session.unsubscribe(subscriber);
+            if (OTSession.session) OTSession.session.unsubscribe(subscriber);
+            else OTSession.session.destroy();
+            
             OTSession.streams = [];
           });
         }
