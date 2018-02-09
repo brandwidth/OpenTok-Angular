@@ -62,8 +62,8 @@ ng.module('opentok', [])
       return OTSession;
     }
   ])
-  .directive('otLayout', ['$window', '$parse', 'OT', 'OTSession',
-    function ($window, $parse, OT, OTSession) {
+  .directive('otLayout', ['$window', '$parse', 'OT', 'OTSession', '$timeout',
+    function ($window, $parse, OT, OTSession, $timeout) {
       return {
         restrict: 'E',
         scope: {
@@ -80,6 +80,14 @@ ng.module('opentok', [])
             return element.children().length;
           }, layout);
           $window.addEventListener('resize', layout);
+          var events = ['webkitfullscreenchange', 'mozfullscreenchange', 'fullscreenchange'];
+          for (var i = events.length - 1; i >= 0; i--) {
+            $window.addEventListener(events[i], function (event) {
+              $timeout(function () {
+                layout();
+              }, 200);
+            });
+          }
           scope.$on('otLayout', layout);
           var listenForStreamChange = function listenForStreamChange() {
             OTSession.session.on('streamPropertyChanged', function (event) {
